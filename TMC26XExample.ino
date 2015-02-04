@@ -23,7 +23,7 @@
  
  */
 //#include <SPI.h>
-#include ”TMC26XStepper.h”
+#include "TMC26XStepper.h"
 
 //we have a stepper motor with 200 steps per rotation, CS pin 2, dir pin 6, step pin 7 and a current of 300mA
 TMC26XStepper tmc26XStepper = TMC26XStepper(200,2,6,7,700);
@@ -78,5 +78,3 @@ void loop() {
   }  
   tmc26XStepper.move();
 }
-
-
