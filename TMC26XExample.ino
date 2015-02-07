@@ -22,11 +22,12 @@
  THE SOFTWARE.
  
  */
-//#include <SPI.h>
+//Henrik excluded #include <SPI.h>
 #include "TMC26XStepper.h"
 
 //we have a stepper motor with 200 steps per rotation, CS pin 2, dir pin 6, step pin 7 and a current of 300mA
 TMC26XStepper tmc26XStepper = TMC26XStepper(200,2,6,7,700);
+
 int curr_step;
 int speed =  0;
 int speedDirection = 100;

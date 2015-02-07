@@ -24,15 +24,17 @@
  THE SOFTWARE.
  
  */
-
+ 
+//Henrik excluded
 //#if defined(ARDUINO) && ARDUINO >= 100
-//#include "Arduino.h"
-//#elif defined(SPARK)
-#include "application.h"
+//	#include <Arduino.h>
+//#else
+//	#include <WProgram.h>
 //#endif
+//#include <SPI.h>
 
-//include "SPI.h"
-
+//Henrik added application.h
+#include "application.h"
 #include "TMC26XStepper.h"
 
 //some default values used in initialization
@@ -167,7 +169,7 @@ void TMC26XStepper::start() {
 	Serial.print("STEP pin: ");
 	Serial.println(step_pin);
 	Serial.print("current scaling: ");
-	//Serial.println(current_scaling,DEC);
+	//Henrik excluded since current_scaling not defined - Serial.println(current_scaling,DEC);
 #endif
 	//set the pins as output & its initial value
 	pinMode(step_pin, OUTPUT);     
@@ -374,7 +376,7 @@ char TMC26XStepper::getStallGuardThreshold(void) {
     //convert the value to an int to correctly handle the negative numbers
     char result = stall_guard_threshold;
     //check if it is negative and fill it up with leading 1 for proper negative number representation
-    //02.02.15 Henrik Changed 'if (result & _BV(6) {' to ' if (result & (1 << 6) {'
+    //Henrik changed _BV(6) to (1 << 6)
     if (result & (1 << 6)) {
         result |= 0xC0;
     }
@@ -954,44 +956,16 @@ if (this->started) {
  */
 inline void TMC26XStepper::send262(unsigned long datagram) {
 	unsigned long i_datagram;
+    
     //preserver the previous spi mode
-/*    #if defined(ARDUINO)
-        unsigned char oldMode =  SPCR & SPI_MODE_MASK;
-    #elif defined(SPARK)
-        unsigned char oldMode =  SPI_MODE3; //lets set the default to mode 3 in case none of the below are true
-        if(SPI.SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low && SPI.SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge){
-            oldMode =  SPI_MODE0;
-        }
-        if(SPI.SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low && SPI.SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge){
-            oldMode =  SPI_MODE1;
-        }
-        if(SPI.SPI_InitStructure.SPI_CPOL = SPI_CPOL_High && SPI.SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge){
-            oldMode =  SPI_MODE2;
-        }
-        if(SPI.SPI_InitStructure.SPI_CPOL = SPI_CPOL_High && SPI.SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge){
-            oldMode =  SPI_MODE3;
-        }
-    #endif
-
+    //Henrik changed 'unsigned char oldMode =  SPCR & SPI_MODE_MASK' to 'unsigned char oldMode = SPI_MODE3'
+    unsigned char oldMode =  SPI_MODE3;
+	
     //if the mode is not correct set it to mode 3
     if (oldMode != SPI_MODE3) {
         SPI.setDataMode(SPI_MODE3);
     }
-*/  
-
-//preserver the previous spi mode
-    //#if defined(ARDUINO)
-    //    unsigned char oldMode =  SPCR & SPI_MODE_MASK;
-    //#else
-        unsigned char oldMode =  SPI_MODE3;
-    //#endif
-
-    //if the mode is not correct set it to mode 3
-    if (oldMode != SPI_MODE3) {
-        SPI.setDataMode(SPI_MODE3);
-    }
-
-
+	
 	//select the TMC driver
 	digitalWrite(cs_pin,LOW);
 
